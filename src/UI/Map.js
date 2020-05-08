@@ -3,19 +3,19 @@ export class Map {
 		this.render(coords)
 	}
 
-	render(cordinates) {
+	render(coordinates) {
 		if (!google) {
 			alert('Could not load google maps libriary')
 			return;
 		}
 
 		const map = new google.maps.Map(document.getElementById('map'), {
-			center: cordinates,
+			center: coordinates,
 			zoom: 16
 		});
 
 		new google.maps.Marker({
-			position: cordinates,
+			position: coordinates,
 			map: map
 		});
 	}
