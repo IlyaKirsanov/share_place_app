@@ -1,13 +1,23 @@
 import { Modal } from './UI/Modal';
+import { Map } from './UI/Map';
+
 
 class PlaceFinder {
 	constructor() {
 		const addressForm = document.querySelector('form');
 		const locateUserBtn = document.getElementById('locate-btn');
 
-		locateUserBtn.addEventListener('click', this.locateUserHandler)
-		addressForm.addEventListener('submit', this.findAdressHndler)
+		locateUserBtn.addEventListener('click', this.locateUserHandler.bind(this))
+		addressForm.addEventListener('submit', this.findAdressHndler.bind(this))
 
+	}
+
+	selectPlace(cordinates) {
+		if (this.map) {
+			this.map.render(cordinates);
+		} else {
+			this.map = new Map(cordinates);
+		}
 	}
 
 	locateUserHandler() {
@@ -28,6 +38,8 @@ class PlaceFinder {
 					lng: successResult.coords.longitude //+ Math.random() * 50
 				};
 				console.log(cordinates);
+				this.selectPlace(cordinates);
+				//контекст вызова ф-ии совпадает с this в successResult, т.е. контекст вызова ф-ии хендлера, а так как это ивентХендлер, то контекстом будет глобальная область, чтобы это избежать в конструкторе нужно забайндить this 
 			}, error => {
 				modal.hide();
 				alert('Could not locate you. Please enter adress manualy')
